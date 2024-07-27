@@ -1,6 +1,6 @@
 # (Re)cycle
 
-Download [here](https://github.com/Logan-010/re-cycle) or on the [itch page](https://seedse.itch.io/re-cycle).
+Download [here](https://github.com/Logan-010/re-cycle/releases/latest) or on the [itch page](https://seedse.itch.io/re-cycle).
 
 A simple 2d game about recycling
 
