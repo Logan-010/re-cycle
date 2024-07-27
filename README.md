@@ -1,5 +1,7 @@
 # (Re)cycle
 
+Download [here](https://github.com/Logan-010/re-cycle) or on the [itch page](https://seedse.itch.io/re-cycle).
+
 A simple 2d game about recycling
 
 Built for Bevy gamejam 5.
