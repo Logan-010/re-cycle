@@ -12,6 +12,7 @@ use avian2d::prelude::*;
 #[cfg(feature = "dev-tools")]
 use bevy::dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin};
 use bevy::{
+    asset::AssetMetaCheck,
     prelude::*,
     window::{WindowMode, WindowResolution},
 };
@@ -48,7 +49,12 @@ fn main() -> AppExit {
                     }),
                     ..Default::default()
                 })
-                .set(ImagePlugin::default_nearest()),
+                .set(ImagePlugin::default_nearest())
+                .set(AssetPlugin {
+                    mode: AssetMode::Unprocessed,
+                    meta_check: AssetMetaCheck::Never,
+                    ..default()
+                }),
             asset_embedding::EmbeddedAssetPlugin,
             PhysicsPlugins::default().with_length_unit(8.0),
             #[cfg(debug_assertions)]
