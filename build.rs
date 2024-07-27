@@ -1,8 +1,6 @@
+use std::io;
 #[cfg(target_os = "windows")]
-use {
-    std::{env, io},
-    winres::WindowsResource,
-};
+use {std::env, winres::WindowsResource};
 
 fn main() -> io::Result<()> {
     #[cfg(target_os = "windows")]
