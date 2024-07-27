@@ -1,0 +1,41 @@
+[package]
+name = "re-cycle"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+avian2d = "0.1.1"
+bevy = "0.14.0"
+bevy_pkv = "0.11.0"
+edges = { version = "0.3.3", features = ["bevy"], default-features = false }
+rand = { version = "0.8.5", default-features = false, features = [
+  "std",
+  "std_rng",
+] }
+winit = { version = "0.30.4", default-features = false }
+
+[build-dependencies]
+winres = "0.1.12"
+
+[features]
+default = ["fast-compile", "dev-tools"]
+dev-tools = ["bevy/bevy_dev_tools"]
+fast-compile = ["bevy/dynamic_linking"]
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+panic = "abort"
+strip = "symbols"
+incremental = false
+debug = false
+
+[profile.release.package."*"]
+opt-level = "z"
