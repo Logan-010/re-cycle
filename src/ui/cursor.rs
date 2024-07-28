@@ -61,12 +61,24 @@ pub fn update_cursor(
     camera_query: Query<(&Camera, &GlobalTransform), With<rendering::types::OuterCamera>>,
     mut ghost_cursor_query: Query<&mut Transform, With<types::GhostCursor>>,
     mut cursor_query: Query<&mut Style, With<types::Cursor>>,
+    touches: Res<Touches>,
 ) {
     let window = window_query.single();
     let (camera, camera_transform) = camera_query.single();
 
-    let Some(pos) = window.cursor_position() else {
-        return;
+    let pos = match window.cursor_position() {
+        Some(pos) => pos,
+        None => {
+            let mut pos = Vec2::ZERO;
+            for finger in touches.iter() {
+                pos = finger.position();
+            }
+            if pos != Vec2::ZERO {
+                return;
+            } else {
+                pos
+            }
+        }
     };
 
     let Some(world_pos) = camera.viewport_to_world_2d(camera_transform, pos) else {

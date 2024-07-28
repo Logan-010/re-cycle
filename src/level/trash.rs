@@ -54,7 +54,7 @@ pub fn update_trash_border(
     }
 }
 
-#[allow(clippy::type_complexity)]
+#[allow(clippy::type_complexity, clippy::too_many_arguments)]
 pub fn grab_object(
     mut commands: Commands,
     space_query: SpatialQuery,
@@ -66,8 +66,16 @@ pub fn grab_object(
     is_trash: Query<&types::Trash, Without<types::HeldObject>>,
     asset_server: Res<AssetServer>,
     first_click_query: Query<&types::FirstClick>,
+    touches: Res<Touches>,
 ) {
-    if mouse_input.just_pressed(MouseButton::Left) {
+    let mut touch_started = false;
+    for finger in touches.iter() {
+        if touches.just_pressed(finger.id()) {
+            touch_started = true;
+        }
+    }
+
+    if mouse_input.just_pressed(MouseButton::Left) || touch_started {
         for (entity, transform) in mouse_pos_query.iter() {
             if let Some(ray_hit_data) = space_query.cast_ray_predicate(
                 transform.translation.xy(),
@@ -219,8 +227,16 @@ pub fn release_object(
     holding_objects_query: Query<Entity, With<types::HoldingObject>>,
     held_object_joint: Query<Entity, With<types::HeldObjectJoint>>,
     asset_server: Res<AssetServer>,
+    touches: Res<Touches>,
 ) {
-    if !mouse_input.pressed(MouseButton::Left) {
+    let mut touch_stopped = false;
+    for finger in touches.iter() {
+        if touches.just_released(finger.id()) {
+            touch_stopped = true;
+        }
+    }
+
+    if !mouse_input.pressed(MouseButton::Left) || touch_stopped {
         for holding_entity in holding_objects_query.iter() {
             commands
                 .entity(holding_entity)
