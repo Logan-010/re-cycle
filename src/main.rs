@@ -14,8 +14,10 @@ use bevy::dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin};
 use bevy::{
     asset::AssetMetaCheck,
     prelude::*,
-    window::{WindowMode, WindowResolution},
+    window::WindowResolution,
 };
+#[cfg(not(target_arch = "wasm32"))]
+use bevy::window::WindowMode;
 use bevy_pkv::PkvStore;
 use winit::window::Icon;
 
@@ -43,6 +45,7 @@ fn main() -> AppExit {
                         #[cfg(debug_assertions)]
                         mode: WindowMode::Windowed,
                         #[cfg(not(debug_assertions))]
+                        #[cfg(not(target_arch = "wasm32"))]
                         mode: WindowMode::Fullscreen,
                         prevent_default_event_handling: false,
                         ..Default::default()
